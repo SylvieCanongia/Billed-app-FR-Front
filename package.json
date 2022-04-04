@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "jest": "jest",
     "test": "jest --coverage --noStackTrace --silent"
   },
   "jest": {
@@ -24,6 +25,9 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
     "@babel/preset-env": "^7.10.4",
     "@testing-library/dom": "^7.20.0",
     "@testing-library/jest-dom": "^5.11.0",

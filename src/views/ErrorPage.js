@@ -1,7 +1,7 @@
-import VerticalLayout from './VerticalLayout.js'
+/* eslint-disable import/extensions */
+import VerticalLayout from './VerticalLayout.js';
 
-export default (error) => {
-  return (`
+export default (error) => (`
     <div class='layout'>
       ${VerticalLayout()}
       <div class='content'>
@@ -9,8 +9,9 @@ export default (error) => {
           <div class='content-title'> Erreur </div>
         </div>
         <div data-testid="error-message">
-          ${error ? error : ""}
+          ${error || ''}
         </div>
     </div>`
-  )
-}
+);
+
+// ${error || ''} instead of ${error ? error : ''}

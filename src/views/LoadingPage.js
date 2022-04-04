@@ -1,13 +1,11 @@
-import VerticalLayout from './VerticalLayout.js'
+/* eslint-disable import/extensions */
+import VerticalLayout from './VerticalLayout.js';
 
-export default () => {
-
-  return (`
+export default () => (`
     <div class='layout'>
       ${VerticalLayout()}
       <div class='content' id='loading'>
         Loading...
       </div>
     </div>`
-  )
-}
+);
