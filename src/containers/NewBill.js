@@ -4,8 +4,11 @@ import Logout from "./Logout.js"
 export default class NewBill {
   constructor({ document, onNavigate, store, localStorage }) {
     this.document = document
+    
     this.onNavigate = onNavigate
+    
     this.store = store
+    
     const formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`)
     formNewBill.addEventListener("submit", this.handleSubmit)
     const file = this.document.querySelector(`input[data-testid="file"]`)
@@ -17,28 +20,50 @@ export default class NewBill {
   }
   handleChangeFile = e => {
     e.preventDefault()
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-    const filePath = e.target.value.split(/\\/g)
+    const file = this.document.querySelector(`input[data-testid="file"]`).files[0];
+    const filePath = e.target.value.split(/\\/g);
     const fileName = filePath[filePath.length-1]
-    const formData = new FormData()
-    const email = JSON.parse(localStorage.getItem("user")).email
-    formData.append('file', file)
-    formData.append('email', email)
 
-    this.store
-      .bills()
-      .create({
-        data: formData,
-        headers: {
-          noContentType: true
-        }
-      })
-      .then(({fileUrl, key}) => {
-        console.log(fileUrl)
-        this.billId = key
-        this.fileUrl = fileUrl
-        this.fileName = fileName
-      }).catch(error => console.error(error))
+    // Get the extension of a media name (at index [0])
+    const getExtension = (mediaName) => {
+    const regex = /[^.]+$/;
+    const ext = mediaName.match(regex);
+    return ext[0];
+    };
+
+    // regexp that tests if the value of the element is jpg, jpeg or png
+    const regex = /(jpe?g|png)$/;
+    // Gets the extension of the filename
+    const ext = getExtension(fileName);
+
+    // If the extension matches regex, load the file
+    if(ext.match(regex)) {
+      console.log(fileName)
+      const formData = new FormData()
+      const email = JSON.parse(localStorage.getItem("user")).email
+      formData.append('file', file)
+      formData.append('email', email)
+
+      this.store
+        .bills()
+        .create({
+          data: formData,
+          headers: {
+            noContentType: true
+          }
+        })
+        .then(({fileUrl, key}) => {
+          console.log(fileUrl)
+          this.billId = key
+          this.fileUrl = fileUrl
+          this.fileName = fileName
+        }).catch(error => console.error(error))
+    } else {
+      // If the extension doesn't matches the regex, displays an alert message and reset the input
+      alert('Veuillez choisir un fichier avec l\'extension .jpg, .jpeg ou png')
+      this.document.querySelector(`input[data-testid="file"]`).value = null
+      return;
+    }
   }
   handleSubmit = e => {
     e.preventDefault()
