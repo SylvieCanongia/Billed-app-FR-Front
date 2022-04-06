@@ -58,7 +58,13 @@ export default class {
           console.log(bills)
             
           bills.sort((a, b) => {
-            return new Date(b.date) - new Date(a.date)
+            console.log(new Date(b.date) - new Date(a.date))
+            
+            if(isNaN(new Date(b.date) - new Date(a.date))) {
+              console.log(`isNan : new Date(b.date) - new Date(a.date) => new Date(b.date) = ${new Date(b.date)}, new Date(a.date) = ${new Date(a.date)} and a.date = ${a.date} `)
+            }
+
+            return (new Date(b.date) || 0) - (new Date(a.date) || 0)
           });
          
         return bills;
