@@ -40,7 +40,7 @@ export default class {
             try {
               return {
                 ...doc,
-                // date: formatDate(doc.date),
+                date: formatDate(doc.date),
                 status: formatStatus(doc.status)
               };
             } catch(e) {
@@ -56,30 +56,8 @@ export default class {
           });
           console.log('length', bills.length);
           console.log(bills)
-            
-          bills.sort((a, b) => {
-            // console.log(new Date(b.date) - new Date(a.date))
-            
-            // if(isNaN(new Date(b.date) - new Date(a.date))) {
-            //   console.log(`isNan : new Date(b.date) - new Date(a.date) => new Date(b.date) = ${new Date(b.date)}, new Date(a.date) = ${new Date(a.date)} and a.date = ${a.date} `)
-            // }
 
-            return (new Date(b.date) || 0) - (new Date(a.date) || 0)
-          });
-
-          // bills.forEach(bill => {
-          //   console.log(`date: ${bill.date}`)
-          //   console.log(`date formatée: ${formatDate(bill.date)}`)
-          // });
-
-          const billsWithFormatDate = bills.map( bill => {
-            return  {
-              ...bill,
-              date: formatDate(bill.date),
-            }
-          });
-         
-        return billsWithFormatDate;
+        return bills;
       });
     }
   };

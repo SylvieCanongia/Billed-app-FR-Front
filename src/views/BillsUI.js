@@ -18,7 +18,17 @@ const row = (bill) => (`
     </tr>
     `);
 
-const rows = (data) => ((data && data.length) ? data.map((bill) => row(bill)).join('') : '');
+// const rows = (data) => ((data && data.length) ? data.map((bill) => row(bill)).join('') : '');
+const rows = (data) => {
+  if (data && data.length) {
+    data.sort((a, b) => {
+    const dateA = Date.parse(a.date);
+    const dateB = Date.parse(b.date);
+    return dateA === dateB ? 0 : dateA < dateB ? 1 : -1;
+    })
+  }
+  return data && data.length ? data.map((bill) => row(bill)).join('') : '';
+}
 
 export default ({ data: bills, loading, error }) => {
   const modal = () => (`
