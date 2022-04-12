@@ -77,7 +77,8 @@ describe('Given I am connected as an employee', () => {
         document, onNavigate, store: null, localStorage: window.localStorage,
       });
 
-      document.body.innerHTML = NewBillUI({ data: { bills } });
+      // const newBillUI = NewBillUI();
+      // document.body.innerHTML = newBillUI;
 
       const handleClickNewBill1 = jest.fn((e) => bill.handleClickNewBill());
       // const buttonNewBill = screen.getByTestId('btn-new-bill');
