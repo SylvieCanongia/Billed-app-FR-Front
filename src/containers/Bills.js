@@ -35,8 +35,6 @@ export default class {
       .then(snapshot => {
         const bills = snapshot
           .map(doc => {
-            console.log(doc)
-            console.log(typeof doc.date)
             try {
               return {
                 ...doc,
@@ -54,8 +52,7 @@ export default class {
               };
             }
           });
-          console.log('length', bills.length);
-          // console.log(bills)
+          // console.log('length', bills.length);
 
         return bills;
       });
