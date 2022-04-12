@@ -1,3 +1,5 @@
+/* istanbul ignore next */
+
 module.exports = {
     env: {
         browser: true,
