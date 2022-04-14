@@ -38,8 +38,31 @@ label {
 }
 
 .errorFile {
-  display: none; 
-  color: red;
+  height: 30px;
+  margin-inline-start: 40px;
+  margin-block-start: 6px;
+  font-size: 14px;
+  color: black;
+}
+
+.errorFileContainer {
+  display: none;
+  position: relative;
+  border: 1px solid gray;
+  margin-block-start: 8px;
+  border-radius: 5px;
+}
+
+.errorFile::before {
+  position: absolute;
+  display: inline-block;
+  top: 0px;
+  left: 0px;
+  width: 35px;
+  height: 35px;
+  content: "";
+  background-image: url(./../assets/images/warning.png);
+  background-size: 35px 35px;
 }
 
 #btn-send-bill {
