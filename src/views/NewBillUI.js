@@ -34,16 +34,16 @@ export default () => (`
                   </div>
                   <div class="col-half">
                     <label for="amount" class="bold-label">Montant TTC </label>
-                    <input required type="number" class="form-control blue-border input-icon input-icon-right" data-testid="amount" placeholder="348"/>
+                    <input required type="number" min="0.01" step="0.01" class="form-control blue-border input-icon input-icon-right" data-testid="amount" placeholder="348.10"/>
                   </div>
                   <div class="col-half-row">
-                    <div class="flex-col"> 
+                    <div class="flex-col">
                       <label for="vat" class="bold-label">TVA</label>
                       <input type="number" class="form-control blue-border" data-testid="vat" placeholder="70" />
                     </div>
                     <div class="flex-col">
-                      <label for="pct" class="white-text">%</label>
-                      <input required type="number" class="form-control blue-border" data-testid="pct" placeholder="20" />
+                      <label for="pct" class="bold-label">%</label>
+                      <input required type="number" step="0.1" class="form-control blue-border" data-testid="pct" placeholder="20" />
                     </div>
                   </div>
                 </div>
@@ -54,7 +54,9 @@ export default () => (`
                   </div>
                   <div class="col-half">
                     <label for="file" class="bold-label">Justificatif</label>
-                    <input required type="file" class="form-control blue-border" data-testid="file" />
+                    <input required id="file" type="file" class="form-control blue-border" data-testid="file" />
+                    <div data-errorFile class="errorFile"></div>
+
                   </div>
                 </div>
             </div>

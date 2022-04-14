@@ -22,7 +22,8 @@ export default class NewBill {
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0];
     const filePath = e.target.value.split(/\\/g);
-    const fileName = filePath[filePath.length-1]
+    const fileName = filePath[filePath.length-1];
+    const errorFile = document.querySelector('[data-errorFile]');
 
     // Get the extension of a media name (at index [0])
     const getExtension = (mediaName) => {
@@ -38,6 +39,8 @@ export default class NewBill {
 
     // If the extension matches regex, load the file
     if(ext.match(regex)) {
+      errorFile.textContent = '';
+      errorFile.style.display = 'none';
       console.log(fileName)
       const formData = new FormData()
       const email = JSON.parse(localStorage.getItem("user")).email
@@ -57,10 +60,15 @@ export default class NewBill {
           this.billId = key
           this.fileUrl = fileUrl
           this.fileName = fileName
-        }).catch(error => console.error(error))
+        }).catch(error => {
+          console.error(error)
+        })
     } else {
       // If the extension doesn't matches the regex, displays an alert message and reset the input
-      alert('Veuillez choisir un fichier avec l\'extension .jpg, .jpeg ou png')
+      errorFile.textContent = 'Veuillez choisir un fichier avec l\'extension .jpg, .jpeg ou png';
+      errorFile.style.display = 'block';
+
+      // Reset the field of the file not to display the name
       this.document.querySelector(`input[data-testid="file"]`).value = null
       return;
     }

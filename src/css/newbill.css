@@ -37,6 +37,11 @@ label {
   color: #fff;
 }
 
+.errorFile {
+  display: none; 
+  color: red;
+}
+
 #btn-send-bill {
   width: 100px;
   background-color: #0E5AE5;
