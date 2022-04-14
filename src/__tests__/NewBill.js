@@ -2,7 +2,8 @@
  * @jest-environment jsdom
  */
 
-import { fireEvent, screen } from '@testing-library/dom';
+import { fireEvent, render, screen } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import NewBillUI from '../views/NewBillUI';
 import BillsUI, { rows } from '../views/BillsUI';
 import { bills } from '../fixtures/bills';
@@ -18,7 +19,7 @@ jest.mock('../app/Store', () => mockStore);
 
 describe('Given I am connected as an employee', () => {
   describe('When I am on NewBill Page', () => {
-    test('Then, NewBill page should be rendred', () => {
+    test('Then, NewBill page should be rendered', () => {
       document.body.innerHTML = NewBillUI();
       const newBillContainer = screen.findByText('class="form-newbill-container"');
       const expenseType = screen.getByTestId('expense-type');
@@ -41,6 +42,21 @@ describe('Given I am connected as an employee', () => {
 
 
     describe('When I click on send button', () => {
+
+      // const bill = {
+      //   email: '',
+      //   type: '',
+      //   name:  "",
+      //   amount: undefined,
+      //   date:  "",
+      //   vat: undefined,
+      //   pct: undefined,
+      //   commentary: '',
+      //   fileUrl: "",
+      //   fileName: "",
+      //   status: 'pending'
+      // }
+
       test('Then, It should submit form', () => {
         const onNavigate = (pathname) => {
           document.body.innerHTML = ROUTES({ pathname });
@@ -82,12 +98,43 @@ describe('Given I am connected as an employee', () => {
         // expect(updateBill2).toBeTruthy();
       });
     });
-  });
+
+    describe('When I add a file', () => {
+      test('Then, the file name should be rendered into the input', () => {
+        const onNavigate = (pathname) => {
+          document.body.innerHTML = ROUTES({ pathname });
+        };
+
+        Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+        window.localStorage.setItem('user', JSON.stringify({
+        type: 'Employee',
+        }));
+
+        const newBill = new NewBill({
+        document, onNavigate, store: null, localStorage: window.localStorage,
+        });
+
+        document.body.innerHTML = NewBillUI();
+
+        const inputEl = screen.getByLabelText(/justificatif/i);
+
+        const file = new File(['hello'], 'hello.png', {type: 'image/png'});
+
+        userEvent.upload(inputEl, file)
+
+        expect(inputEl.files[0]).toStrictEqual(file)
+        expect(inputEl.files.item(0)).toStrictEqual(file)
+        expect(inputEl.files).toHaveLength(1)
+
+        const sendButton = screen.getByTestId('btn-send-bill');
+        const handleChangeFile1 = jest.fn((e) => newBill.handleChangeFile);
+        sendButton.addEventListener('click', handleChangeFile1);
+        fireEvent.click(sendButton);
+        expect(handleChangeFile1).toHaveBeenCalled();
+        // expect(screen.getByText(/hello\.png/)).toBeInTheDocument();
+      });
+    });
+});
 });
 
-// test d'intégration GET
-
- 
- 
- 
- 
+// test d'intégration POST
