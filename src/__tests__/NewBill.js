@@ -126,11 +126,17 @@ describe('Given I am connected as an employee', () => {
         expect(inputEl.files.item(0)).toStrictEqual(file)
         expect(inputEl.files).toHaveLength(1)
 
-        const sendButton = screen.getByTestId('btn-send-bill');
+        // const sendButton = screen.getByTestId('btn-send-bill');
         const handleChangeFile1 = jest.fn((e) => newBill.handleChangeFile);
-        sendButton.addEventListener('click', handleChangeFile1);
-        fireEvent.click(sendButton);
+        const fileDoc = screen.getByTestId('file'); 
+        fileDoc.addEventListener('change', handleChangeFile1);
+        fireEvent.change(fileDoc, { target: {files: [file]}})
         expect(handleChangeFile1).toHaveBeenCalled();
+        expect(fileDoc.files[0].name).toBe('hello.png');
+
+        // sendButton.addEventListener('click', handleChangeFile1);
+        // fireEvent.click(sendButton);
+
         // expect(screen.getByText(/hello\.png/)).toBeInTheDocument();
       });
     });
