@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "jest": "jest",
+    "jest": "jest --watchAll --verbose",
     "test": "jest --coverage --noStackTrace --silent"
   },
   "jest": {
