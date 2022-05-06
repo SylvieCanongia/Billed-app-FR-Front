@@ -29,6 +29,7 @@ describe('Given I am connected as an employee', () => {
       const pct = screen.getByTestId('pct');
       const commentary = screen.getByTestId('commentary');
       const file = screen.getByTestId('file');
+      const button = screen.getAllByTestId('btn-send-bill');
 
       expect(newBillContainer).toBeTruthy();
       expect(expenseType).toBeTruthy();
@@ -38,6 +39,7 @@ describe('Given I am connected as an employee', () => {
       expect(pct).toBeTruthy();
       expect(commentary).toBeTruthy();
       expect(file).toBeTruthy();
+      expect(button).toBeTruthy();
     });
 
 
@@ -72,15 +74,9 @@ describe('Given I am connected as an employee', () => {
     describe('When I add a file', () => {
       test('Then, the file name should be rendered into the input', () => {
 
-        Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-        window.localStorage.setItem('user', JSON.stringify({
-        type: 'Employee',
-        }));
-
         document.body.innerHTML = NewBillUI();
 
-        const inputEl = screen.getByLabelText(/justificatif/i);
-
+        const inputEl = screen.getByLabelText(/Justificatif/i);
         const file = new File(['hello'], 'hello.png', {type: 'image/png'});
 
         userEvent.upload(inputEl, file)
@@ -107,19 +103,18 @@ describe('Given I am connected as an employee', () => {
 
           document.body.innerHTML = NewBillUI();
 
-          const inputEl = screen.getByLabelText(/justificatif/i);
-
           const file = new File(['hello'], 'hello.pdf', {type: 'application/pdf'});
 
           // const sendButton = screen.getByTestId('btn-send-bill');
           const handleChangeFile1 = jest.fn((e) => newBill.handleChangeFile);
-          const fileDoc = screen.getByTestId('file'); 
+          const fileDoc = screen.getByTestId('file');
           fileDoc.addEventListener('change', handleChangeFile1);
           fireEvent.change(fileDoc, { target: {files: [file]}});
-          userEvent.upload(inputEl, file);
+          // userEvent.upload(inputEl, file);
 
-          const errorFile = document.querySelector('[data-errorFile]');
-          expect(errorFile.textContent).toBe('Veuillez choisir un fichier avec l\'extension .jpg, .jpeg ou png');
+          // const errorFile = screen.queryByTestId('error-file');
+
+          expect(screen.findByText('Veuillez choisir un fichier avec l\'extension .jpg, .jpeg ou png')).toBeTruthy();
         });
       });
 
@@ -182,56 +177,6 @@ describe('Given I am a user connected as Employee and I am on NewBill page', () 
 
       expect(callStore).toHaveBeenCalled();
       
-    });
-
-
-    describe('When an error occurs on API', () => {
-
-      beforeEach(() => {
-        
-        jest.spyOn(mockStore, 'bills');
-
-        Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-        window.localStorage.setItem('user', JSON.stringify({
-        type: 'Employee',
-        email: 'a@a',
-        }));
-
-        const root = document.createElement('div');
-        root.setAttribute('id', 'root');
-        document.body.appendChild(root);
-        router();
-
-        // const newBill = new NewBill({
-        // document, onNavigate, store: null, localStorage: window.localStorage,
-        // });
-        
-      });
-      
-      test('create new bill from an API and fails with 404 message error', async () => {
-        mockStore.bills.mockImplementationOnce(() => ({
-          create: () => Promise.reject(new Error('Erreur 404')),
-        }));
-
-        window.onNavigate(ROUTES_PATH.NewBill);
-
-        await new Promise(process.nextTick);
-        
-        const message = await screen.getByText(/Erreur 404/);
-        expect(message).toBeTruthy();
-      });
-
-      test('create new bill from an API and fails with 500 message error', async () => {
-        mockStore.bills.mockImplementationOnce(() => ({
-          
-          create: (bill) => Promise.reject(new Error('Erreur 500')),
-        }));
-
-        window.onNavigate(ROUTES_PATH.NewBill);
-        await new Promise(process.nextTick);
-        const message = await screen.getByText(/Erreur 500/);
-        expect(message).toBeTruthy();
-      });
     });
   });
 });

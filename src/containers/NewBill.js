@@ -24,7 +24,7 @@ export default class NewBill {
     const filePath = e.target.value.split(/\\/g);
     const fileName = filePath[filePath.length-1];
     const errorFileContainer = document.querySelector('.errorFileContainer');
-    const errorFile = document.querySelector('[data-errorFile]');
+    const errorFile = document.querySelector('[data-error-file]');
 
     // Get the extension of a media name (at index [0])
     const getExtension = (mediaName) => {
@@ -76,7 +76,7 @@ export default class NewBill {
   }
   handleSubmit = e => {
     e.preventDefault()
-    console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
+    // console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
     const bill = {
       email,
