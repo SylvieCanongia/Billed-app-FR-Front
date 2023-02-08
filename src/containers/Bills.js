@@ -32,8 +32,12 @@ export default class {
       return this.store
       .bills()
       .list()
+      // Sort function is used for sorting dates
       .then(snapshot => {
         const bills = snapshot
+          .sort(function(a, b){
+            return new Date(b.date) - new Date(a.date);
+          })
           .map(doc => {
             try {
               return {
@@ -50,12 +54,11 @@ export default class {
                 date: doc.date,
                 status: formatStatus(doc.status)
               };
-            }
+            };
           });
-          // console.log('length', bills.length);
-
-        return bills;
+          console.log(bills)
+        return bills
       });
-    }
+    };
   };
 }

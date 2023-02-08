@@ -1,52 +1,37 @@
-import { ROUTES_PATH } from '../constants/routes.js'
-import Logout from "./Logout.js"
+import { ROUTES_PATH } from '../constants/routes.js';
+import Logout from "./Logout.js";
 
 export default class NewBill {
   constructor({ document, onNavigate, store, localStorage }) {
-    this.document = document
-    
-    this.onNavigate = onNavigate
-    
-    this.store = store
-    
-    const formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`)
-    formNewBill.addEventListener("submit", this.handleSubmit)
-    const file = this.document.querySelector(`input[data-testid="file"]`)
-    file.addEventListener("change", this.handleChangeFile)
-    this.fileUrl = null
-    this.fileName = null
-    this.billId = null
-    new Logout({ document, localStorage, onNavigate })
+    this.document = document;
+    this.onNavigate = onNavigate;
+    this.store = store;
+
+    const formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`);
+    formNewBill.addEventListener("submit", this.handleSubmit);
+
+    const file = this.document.querySelector(`input[data-testid="file"]`);
+    file.addEventListener("change", this.handleChangeFile);
+    this.fileUrl = null;
+    this.fileName = null;
+    this.billId = null;
+    new Logout({ document, localStorage, onNavigate });
   }
+
   handleChangeFile = e => {
-    e.preventDefault()
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0];
-    const filePath = e.target.value.split(/\\/g);
-    const fileName = filePath[filePath.length-1];
-    const errorFileContainer = document.querySelector('.errorFileContainer');
-    const errorFile = document.querySelector('[data-error-file]');
+    e.preventDefault();
+    const file = e.target.files[0];
+    const fileName = e.target.files[0].name;
+    const fileExtention = fileName.substring(fileName.lastIndexOf('.'));
+    const fileField = e.target;
 
-    // Get the extension of a media name (at index [0])
-    const getExtension = (mediaName) => {
-    const regex = /[^.]+$/;
-    const ext = mediaName.match(regex);
-    return ext[0];
-    };
+    if(fileExtention === '.jpg' || fileExtention === '.jpeg' || fileExtention === '.png') {
+      fileField.setCustomValidity("");
 
-    // regexp that tests if the value of the element is jpg, jpeg or png
-    const regex = /(jpe?g|png)$/;
-    // Gets the extension of the filename
-    const ext = getExtension(fileName);
-
-    // If the extension matches regex, load the file
-    if(ext.match(regex)) {
-      errorFile.textContent = '';
-      errorFileContainer.style.display = 'none';
-      console.log(fileName)
-      const formData = new FormData()
-      const email = JSON.parse(localStorage.getItem("user")).email
-      formData.append('file', file)
-      formData.append('email', email)
+      const formData = new FormData();
+      const email = JSON.parse(localStorage.getItem("user")).email;
+      formData.append('file', file);
+      formData.append('email', email);
 
       this.store
         .bills()
@@ -61,23 +46,17 @@ export default class NewBill {
           this.billId = key
           this.fileUrl = fileUrl
           this.fileName = fileName
-        }).catch(error => {
-          console.error(error)
-        })
+        }).catch(error => console.error(error))
     } else {
-      // If the extension doesn't matches the regex, displays an alert message and reset the input
-      errorFile.textContent = 'Veuillez choisir un fichier avec l\'extension .jpg, .jpeg ou png';
-      errorFileContainer.style.display = 'block';
-
-      // Reset the field of the file not to display the name
-      this.document.querySelector(`input[data-testid="file"]`).value = null
-      return;
+      // If the extension doesn't matches the right format, displays a message
+      fileField.setCustomValidity("Le format doit être JPG, JPEG ou PNG")
     }
   }
+
   handleSubmit = e => {
     e.preventDefault()
-    // console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
-    const email = JSON.parse(localStorage.getItem("user")).email
+    console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value);
+    const email = JSON.parse(localStorage.getItem("user")).email;
     const bill = {
       email,
       type: e.target.querySelector(`select[data-testid="expense-type"]`).value,
@@ -90,9 +69,9 @@ export default class NewBill {
       fileUrl: this.fileUrl,
       fileName: this.fileName,
       status: 'pending'
-    }
-    this.updateBill(bill)
-    this.onNavigate(ROUTES_PATH['Bills'])
+    };
+    this.updateBill(bill);
+    this.onNavigate(ROUTES_PATH['Bills']);
   }
 
   // not need to cover this function by tests
