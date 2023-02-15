@@ -3,6 +3,9 @@ import WindowIcon from '../assets/svg/window.js';
 import MailIcon from '../assets/svg/mail.js';
 import DisconnectIcon from '../assets/svg/disconnect.js';
 
+/**
+ * UI of vertical navbar
+ */
 export default (height) => {
   let user;
   user = JSON.parse(localStorage.getItem('user'));

@@ -13,5 +13,3 @@ export default (error) => (`
         </div>
     </div>`
 );
-
-// ${error || ''} instead of ${error ? error : ''}

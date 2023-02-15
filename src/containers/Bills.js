@@ -33,6 +33,8 @@ export default class {
       .bills()
       .list()
       // Sort function is used for sorting dates
+      // Turn strings into dates, and then subtract them
+      // to get a value that is either negative, positive, or zero.
       .then(snapshot => {
         const bills = snapshot
           .sort(function(a, b){

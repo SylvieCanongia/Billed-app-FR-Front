@@ -5,6 +5,11 @@ import LoadingPage from './LoadingPage.js';
 
 import Actions from './Actions.js';
 
+/**
+ * Format each row of the table on Bills page
+ * @param {*} bill 
+ * @returns 
+ */
 const row = (bill) => (`
     <tr>
       <td>${bill.type}</td>
@@ -18,18 +23,18 @@ const row = (bill) => (`
     </tr>
     `);
 
-// const rows = (data) => ((data && data.length) ? data.map((bill) => row(bill)).join('') : '');
 export const rows = (data) => {
   if (data && data.length) {
-    data.sort((a, b) => {
-    const dateA = Date.parse(a.date);
-    const dateB = Date.parse(b.date);
-    return dateA === dateB ? 0 : dateA < dateB ? 1 : -1;
-    })
+    data.sort(function(a, b){
+        return new Date(b.date) - new Date(a.date);
+      })
   }
   return data && data.length ? data.map((bill) => row(bill)).join('') : '';
 }
 
+/**
+ * Hidden modal that is the container for the bill picture (is shown when clicking on icon eye)
+ */
 export default ({ data: bills, loading, error }) => {
   const modal = () => (`
     <div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
