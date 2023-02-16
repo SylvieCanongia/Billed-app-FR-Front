@@ -9,6 +9,9 @@ import DashboardUI from "../views/DashboardUI.js"
 
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js"
 
+// In function of what pathname is entered (url), instances the logic from the containers with the "new" keyword
+// and injects the UI (from ROUTES) into index.html root div
+
 export default () => {
   const rootDiv = document.getElementById('root')
   rootDiv.innerHTML = ROUTES({ pathname: window.location.pathname })

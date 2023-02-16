@@ -77,6 +77,7 @@ export default class {
     $('#arrow-icon3').click((e) => this.handleShowTickets(e, bills, 3))
     new Logout({ localStorage, onNavigate })
   }
+  
 
   handleClickIconEye = () => {
     const billUrl = $('#icon-eye-d').attr("data-bill-url")
@@ -85,27 +86,34 @@ export default class {
     if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
   }
 
+  // Open the clicked ticket
   handleEditTicket(e, bill, bills) {
        console.log('clic')
       
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0;
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
+
+    // if counter is even
     if (this.counter % 2 === 0) {
       bills.forEach(b => {
+        // Sets a blue background to each bill of the opened list
         $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
       })
+      // Sets a dark background to the opened bill
       $(`#open-bill${bill.id}`).css({ background: '#2A2B35' })
+      // Open the bill in the container on the right by setting the UI of the opened bill (DashboardFormUI)
       $('.dashboard-right-container div').html(DashboardFormUI(bill))
       $('.vertical-navbar').css({ height: '150vh' })
       this.counter +=1;
     } else {
+      // else if counter is odd, bill is already opened, so it closes it
+      // and sets the background to blue
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
-
       $('.dashboard-right-container div').html(`
         <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
       `)
       $('.vertical-navbar').css({ height: '120vh' })
-      this.counter+=1;
+      this.counter +=1;
     }
     $('#icon-eye-d').click(this.handleClickIconEye)
     $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
@@ -133,7 +141,10 @@ export default class {
   }
 
   handleShowTickets(e, bills, index) {
+    // Resets the counter if another list is clicked (because list index is different)
     if (this.counter === undefined || this.index !== index) this.counter = 0
+    // Sets the index to the corresponding clicked list's index
+    // And re-sets the event handleEditTicket on each bill
     if (this.index === undefined || this.index !== index) {
       this.index = index
       bills.forEach(bill => {
@@ -141,18 +152,21 @@ export default class {
       })
     }
 
+    // if counter is even, open the list by rotation to 0deg and increment the counter by 1
     if (this.counter % 2 === 0) {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
       $(`#status-bills-container${this.index}`)
         .html(cards(filteredBills(bills, getStatus(this.index))))
       this.counter++
     } else {
+      // if counter is odd, list is already opened, so it close it on click
+      // by rotating to 90deg
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
       $(`#status-bills-container${this.index}`)
         .html("")
       this.counter++
     }
-
+    
     bills.forEach(bill => {
       $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
     })

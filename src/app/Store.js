@@ -4,6 +4,9 @@ const jsonOrThrowIfError = async (response) => {
   return response.json()
 }
 
+/**
+ * Manages availablity of the back-end and builds the base of the HTTP Requests
+ */
 class Api {
   constructor({baseUrl}) {
     this.baseUrl = baseUrl;
@@ -30,6 +33,9 @@ const getHeaders = (headers) => {
   return {...h, ...headers}
 }
 
+// These methods can be called from inside the app and are managed by the Store class.
+// For example from Bills.js container with dot notation ("return this.store.bills().list()" L32)
+   
 class ApiEntity {
   constructor({key, api}) {
     this.key = key;
@@ -52,7 +58,8 @@ class ApiEntity {
   }
 }
 
-
+// Manages the actions to do in the application, by getting HTTP requests syntax from Api
+// and internal requests by ApiEntity
 
 class Store {
   constructor() {

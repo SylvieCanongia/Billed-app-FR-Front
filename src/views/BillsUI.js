@@ -7,8 +7,8 @@ import Actions from './Actions.js';
 
 /**
  * Format each row of the table on Bills page
- * @param {*} bill 
- * @returns 
+ * @param bill 
+ * @returns {HTMLElement}
  */
 const row = (bill) => (`
     <tr>
