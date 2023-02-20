@@ -5,12 +5,14 @@
 import "@testing-library/jest-dom";
 import { fireEvent, screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
+import BillsUI from "../views/BillsUI";
 import NewBillUI from '../views/NewBillUI';
 import { bills } from '../fixtures/bills';
 import NewBill from '../containers/NewBill';
 import { ROUTES, ROUTES_PATH } from '../constants/routes.js';
 import { localStorageMock } from '../__mocks__/localStorage.js';
 import mockStore from '../__mocks__/store';
+import router from '../app/Router';
 
 jest.mock('../app/Store', () => mockStore);
 
@@ -106,6 +108,34 @@ describe('Given I am a user connected as Employee and I am on NewBill page', () 
       const callStore = jest.spyOn(mockStore, 'bills');
       mockStore.bills().create(bill);
       expect(callStore).toHaveBeenCalled();
+    });
+
+    // Tests errors 404 and 500
+    describe('When an error occurs on API', () => {
+      test('create new bill from an API and fails with 404 message error', async () => {
+        mockStore.bills.mockImplementationOnce(() => ({
+          create: () => Promise.reject(new Error('Erreur 404')),
+        }));
+        document.body.innerHTML = BillsUI({ error: 'Erreur 404'})
+
+        // await for response
+        await new Promise(process.nextTick);
+        const message = screen.getByText(/Erreur 404/);
+        expect(message).toBeTruthy();
+      });
+
+      test('create new bill from an API and fails with 500 message error', async () => {
+        mockStore.bills.mockImplementationOnce(() => ({
+          create: (bill) => Promise.reject(new Error('Erreur 500')),
+        }));
+
+        // Construct DOM
+        document.body.innerHTML = BillsUI({ error: 'Erreur 500'})
+        // await for response
+        await new Promise(process.nextTick);
+        const message = screen.getByText(/Erreur 500/);
+        expect(message).toBeTruthy();
+      });
     });
   });
 });
