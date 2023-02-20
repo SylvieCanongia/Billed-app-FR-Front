@@ -32,7 +32,7 @@ export default class {
       return this.store
       .bills()
       .list()
-      // Sort function is used for sorting dates
+      // Sort function is used for sorting dates from the array of object of bills
       // Turn strings into dates, and then subtract them
       // to get a value that is either negative, positive, or zero.
       .then(snapshot => {
@@ -58,7 +58,7 @@ export default class {
               };
             };
           });
-          console.log(bills)
+          // console.log(bills)
         return bills
       });
     };

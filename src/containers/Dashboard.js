@@ -88,7 +88,6 @@ export default class {
 
   // Open the clicked ticket
   handleEditTicket(e, bill, bills) {
-       console.log('clic')
       
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0;
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id

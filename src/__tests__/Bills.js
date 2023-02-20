@@ -71,7 +71,7 @@ describe("Given I am connected as an employee", () => {
   });
 
   describe('When I am on Bills and I click on the icon eye', async() => {
-    test('A modal should open', () => {
+    test('Then a modal should open', () => {
       const onNavigate = (pathname) => {
        document.body.innerHTML = ROUTES({ pathname });
       };
@@ -104,7 +104,7 @@ describe("Given I am a user connected as Employee", () => {
   
   describe("When I navigate to Bills page", () => {
     
-    test("fetches bills from mock API GET", async () => {
+    test("Then fetches bills from mock API GET", async () => {
       
       localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "a@a" }));
     
@@ -139,7 +139,7 @@ describe("Given I am a user connected as Employee", () => {
         router();
       });
 
-      test("fetches bills from an API and fails with 404 message error", async () => {
+      test("Then fetches bills from an API and fails with 404 message error", async () => {
         mockStore.bills.mockImplementationOnce(() => ({
           list: () => Promise.reject(new Error("Erreur 404")),
         }));
@@ -149,7 +149,7 @@ describe("Given I am a user connected as Employee", () => {
         expect(message).toBeTruthy();
       });
 
-      test("fetches messages from an API and fails with 500 message error", async () => {
+      test("Then fetches messages from an API and fails with 500 message error", async () => {
         mockStore.bills.mockImplementationOnce(() => ({
           list: () => Promise.reject(new Error("Erreur 500")),
         }));

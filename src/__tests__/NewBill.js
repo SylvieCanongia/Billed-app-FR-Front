@@ -87,7 +87,7 @@ describe("Given I am connected as an employee", () => {
 
 describe('Given I am a user connected as Employee and I am on NewBill page', () => {
   describe('When I submit the new bill', () => {
-    test('create a new bill from mock API POST', async () => {
+    test('Then create a new bill from mock API POST', async () => {
 
       const bill = [{
         "id": "47qAXb6fIm2zOKkLzMro",
@@ -112,7 +112,7 @@ describe('Given I am a user connected as Employee and I am on NewBill page', () 
 
     // Tests errors 404 and 500
     describe('When an error occurs on API', () => {
-      test('create new bill from an API and fails with 404 message error', async () => {
+      test('Then create new bill from an API and fails with 404 message error', async () => {
         mockStore.bills.mockImplementationOnce(() => ({
           create: () => Promise.reject(new Error('Erreur 404')),
         }));
@@ -124,7 +124,7 @@ describe('Given I am a user connected as Employee and I am on NewBill page', () 
         expect(message).toBeTruthy();
       });
 
-      test('create new bill from an API and fails with 500 message error', async () => {
+      test('Then create new bill from an API and fails with 500 message error', async () => {
         mockStore.bills.mockImplementationOnce(() => ({
           create: (bill) => Promise.reject(new Error('Erreur 500')),
         }));
